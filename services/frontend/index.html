@@ -4,10 +4,40 @@
     <meta charset="UTF-8">
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <title>CloudSight</title>
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
+  <script>
+    // Set theme from localStorage on page load
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme)
+    }
+
+    // Watch for theme changes from input
+    window.addEventListener('DOMContentLoaded', () => {
+      const toggles = document.querySelectorAll('[data-toggle-theme]')
+      toggles.forEach((toggle) => {
+        const themes = toggle.getAttribute('data-toggle-theme').split(',')
+        // ✅ Sync checkbox state with saved theme
+        if (savedTheme === themes[1]) {
+          toggle.checked = true
+        } else {
+          toggle.checked = false
+        }
+
+        // 👂 Listen for changes
+        toggle.addEventListener('change', (e) => {
+          const target = e.target
+          // const themes = target.getAttribute('data-toggle-theme').split(',')
+          const newTheme = target.checked ? themes[1] : themes[0]
+          document.documentElement.setAttribute('data-theme', newTheme)
+          localStorage.setItem('theme', newTheme)
+        })
+      })
+    })
+  </script>
 </html>
