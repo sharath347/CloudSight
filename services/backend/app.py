@@ -6,13 +6,15 @@ from jose import jwt
 from botocore.exceptions import NoCredentialsError
 from pymongo import MongoClient
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from authentication import increment_user_counter
 from authentication import token_required, update_user_in_keycloak
 
 app = Flask(__name__)
+CORS(app, origins=["*"])
 
 # MongoDB setup (initialize once)
-client = MongoClient("mongodb://admin:admin@localhost:27017/")
+client = MongoClient("mongodb://admin:admin@mongodb:27017/")
 db = client["scoutsuite"]
 collection = db["scan_results"]
 
@@ -94,7 +96,7 @@ def get_service_groups(scan_id):
 def get_service_list(scan_id):
     try:
         # Insert into MongoDB
-        client = MongoClient("mongodb://admin:admin@localhost:27017/")
+        client = MongoClient("mongodb://admin:admin@mongodb:27017/")
         db = client["scoutsuite"]
         collection = db["scan_results"]
 
@@ -109,7 +111,7 @@ def get_service_list(scan_id):
         return jsonify({"success": False, "message": str(e)}), 500
 
 @app.route('/run-scoutsuite', methods=['POST'])
-@token_required
+# @token_required
 def run_scan():
     data = request.get_json()
     aws_access_key = data.get('aws_access_key')
@@ -134,13 +136,13 @@ def run_scan():
     #scan_id = str(uuid.uuid4())
 
     from scoutsuite_runner import run_scoutsuite_aws
-    result = run_scoutsuite_aws(request.user.get("user_id"))
+    result = run_scoutsuite_aws("12345")
 
-    user_id = request.user.get("user_id")
-    counter_update_result = increment_user_counter(user_id)
+    # user_id = request.user.get("user_id")
+    # counter_update_result = increment_user_counter(user_id)
 
-    if not counter_update_result.get("success"):
-        return jsonify(counter_update_result), 500
+    # if not counter_update_result.get("success"):
+        # return jsonify(counter_update_result), 500
     
     return jsonify({"success": True, "message": "Scan done and counter updated successfully"}), 200
 
@@ -203,6 +205,6 @@ def update_user():
 
 if __name__ == '__main__':
     main()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
 
 

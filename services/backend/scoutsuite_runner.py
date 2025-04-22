@@ -47,7 +47,7 @@ def run_scoutsuite_aws(scan_id):
         json_data = json.loads(match.group(1))
 
         # Insert into MongoDB
-        client = MongoClient("mongodb://admin:admin@localhost:27017/")
+        client = MongoClient("mongodb://admin:admin@mongodb:27017/")
         db = client["scoutsuite"]
         collection = db["scan_results"]
         collection.insert_one({

@@ -1,8 +1,8 @@
-FROM python:3.12.3
+FROM python:3.10.12
 
 WORKDIR /app
 
-RUN pip3 install flask boto3 jose pymongo python-keycloak requests glob2 pytest-shutil
+RUN pip3 install flask flask-cors boto3 pymongo python-keycloak python-jose
 
 COPY . .
 

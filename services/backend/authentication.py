@@ -6,7 +6,7 @@ from keycloak.exceptions import KeycloakGetError
 
 def get_keycloak_admin():
     keycloak_admin = KeycloakAdmin(
-        server_url="http://localhost:9000/",
+        server_url="http://keycloak:8080/",
         realm_name="security",
         client_id="security",  # Your confidential client ID
         client_secret_key="fVnoa6QyQNE89DkcxTCCrj24SR2J9dep",  # Your client secret
@@ -81,7 +81,7 @@ def increment_user_counter(user_id):
 
 # Token introspection
 def introspect_token(token):
-    url = "http://localhost:9000/realms/security/protocol/openid-connect/token/introspect"
+    url = "http://keycloak:8080/realms/security/protocol/openid-connect/token/introspect"
     
     client_id = "security"
     client_secret = "fVnoa6QyQNE89DkcxTCCrj24SR2J9dep"

@@ -1,4 +1,13 @@
 services:
+  # keycloak:
+  #   image: quay.io/keycloak/keycloak:26.2.0
+  #   command: start-dev
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+  #     - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+
   backend:
     build: services/backend/
     restart: always
